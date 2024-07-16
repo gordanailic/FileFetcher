@@ -22,9 +22,9 @@ const fetchData = async () => {
   try {
     const response = await axios.get('https://rest-test-eight.vercel.app/api/test');
     const data = response.data.items as Item[];
+    
     //Filter out non-ASCII URLs and URLs not matching the target IP
     const urls: string[] = data.map(item => item.fileUrl).filter(url => /^[\x20-\x7E]+$/.test(url));
-
     const filteredUrls = urls.filter(url => {
       const parsedUrl = new URL(url);
       return parsedUrl.hostname === targetIp;
@@ -47,10 +47,10 @@ const fetchData = async () => {
 
       if (isFile) {
         if (pathParts.length === 2) {
-          //Case for <directory>/<file>
+          //Handle <directory>/<file>
           subdirectories[directory].files.add(pathParts[1]);
         } else if (pathParts.length > 2) {
-          //Case for <directory>/<sub-directory>/<file>
+          //Handle <directory>/<sub-directory>/<file>
           const subDirectory = pathParts[1];
           const file = pathParts.slice(2).join('/');
 
@@ -62,7 +62,7 @@ const fetchData = async () => {
         }
       } else {
         if (pathParts.length === 2) {
-          //Case for <directory>/<sub-directory>
+          //Handle <directory>/<sub-directory>
           const subDirectory = pathParts[1];
           subdirectories[directory].subDirs[subDirectory] = new Set();
         }
@@ -117,7 +117,8 @@ app.get('/api/files', async (req: Request, res: Response) => {
     }
   }
 });
-// Start the server and listen on the specified port
+
+//Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
