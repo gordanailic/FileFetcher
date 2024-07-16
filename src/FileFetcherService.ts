@@ -22,7 +22,7 @@ const fetchData = async () => {
   try {
     const response = await axios.get('https://rest-test-eight.vercel.app/api/test');
     const data = response.data.items as Item[];
-    
+
     //Filter out non-ASCII URLs and URLs not matching the target IP
     const urls: string[] = data.map(item => item.fileUrl).filter(url => /^[\x20-\x7E]+$/.test(url));
     const filteredUrls = urls.filter(url => {
@@ -98,8 +98,9 @@ const refreshCache = async () => {
   cache.set('filesData', data);
 };
 
-//Initial data fetch and cache refresh
+//Initial data fetch
 refreshCache();
+//Cache refresh
 setInterval(refreshCache, 60000);
 
 //Endpoint for fetching data from the cache
